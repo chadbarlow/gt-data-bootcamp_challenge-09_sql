@@ -3,11 +3,11 @@ SELECT e.emp_no, e.last_name, e.first_name, e.sex, s.salary
 FROM employee e
 JOIN salaries s ON e.emp_no = s.emp_no;
 	-- Alternative solution using subquery
-	SELECT emp_no, last_name, first_name, sex, (
+	SELECT e.emp_no, e.last_name, e.first_name, e.sex, (
 		SELECT salary 
-		FROM salaries 
-		WHERE salaries.emp_no = employee.emp_no) AS salary
-	FROM employee;
+		FROM salaries s
+		WHERE s.emp_no = e.emp_no) AS salary
+	FROM employee e;
 
 
 -- List the first name, last name, and hire date for the employees who were hired in 1986.
@@ -25,8 +25,8 @@ JOIN employee e ON dm.emp_no = e.emp_no;
 	SELECT dm.dept_no, d.dept_name, dm.emp_no, e.last_name, e.first_name 
 	FROM dept_manager dm, departments d, employee e
 	WHERE dm.dept_no = d.dept_no AND dm.emp_no = e.emp_no AND dm.emp_no IN (
-		SELECT emp_no 
-		FROM employee)
+		SELECT e.emp_no 
+		FROM e)
 	ORDER BY dm.dept_no;
 
 
@@ -40,23 +40,23 @@ JOIN employee e ON de.emp_no = e.emp_no;
 		e.emp_no, 
 		e.last_name, 
 		e.first_name, (
-		SELECT dept_name 
-		FROM departments 
-		WHERE dept_no = (
-			SELECT dept_no
-			FROM dept_emp 
-			WHERE emp_no = e.emp_no)) 
+		SELECT d.dept_name 
+		FROM departments d
+		WHERE d.dept_no = (
+			SELECT de.dept_no
+			FROM dept_emp de
+			WHERE de.emp_no = e.emp_no)) 
 		AS dept_name, (
-		SELECT dept_no 
-		FROM dept_emp 
-		WHERE emp_no = e.emp_no) 
+		SELECT de.dept_no 
+		FROM dept_emp de
+		WHERE de.emp_no = e.emp_no) 
 		AS dept_no
 	FROM 
 		employee e
 	WHERE 
 		e.emp_no IN (
-			SELECT emp_no 
-			FROM dept_emp)
+			SELECT de.emp_no 
+			FROM dept_emp de)
 	ORDER BY e.emp_no;
 
 
@@ -91,26 +91,26 @@ JOIN dept_emp de ON e.emp_no = de.emp_no
 JOIN departments d ON de.dept_no = d.dept_no
 WHERE d.dept_name IN ('Sales', 'Development');
 	-- Alternative solution using subqueries and UNION
-	SELECT emp_no, last_name, first_name, dept_name
-	FROM employee
-	WHERE emp_no IN (
-		SELECT emp_no
-		FROM dept_emp
-		WHERE dept_no = (
-			SELECT dept_no
-			FROM departments
-			WHERE dept_name = 'Sales'))
+	SELECT e.emp_no, e.last_name, e.first_name, e.dept_name
+	FROM employee e
+	WHERE e.emp_no IN (
+		SELECT de.emp_no
+		FROM dept_emp de
+		WHERE de.dept_no = (
+			SELECT d.dept_no
+			FROM departments d
+			WHERE d.dept_name = 'Sales'))
 	UNION
-	SELECT emp_no, last_name, first_name, dept_name
-	FROM employee
-	WHERE emp_no IN (
-		SELECT emp_no
-		FROM dept_emp
-		WHERE dept_no = (
-			SELECT dept_no
-			FROM departments
-			WHERE dept_name = 'Development'))
-	ORDER BY emp_no;
+	SELECT e.emp_no, e.last_name, e.first_name, e.dept_name
+	FROM employee e
+	WHERE e.emp_no IN (
+		SELECT de.emp_no
+		FROM dept_emp de
+		WHERE de.dept_no = (
+			SELECT d.dept_no
+			FROM departments d
+			WHERE d.dept_name = 'Development'))
+	ORDER BY e.emp_no;
 
 
 -- List the frequency counts, in descending order, of all the employee last names (that is, how many employees share each last name).
