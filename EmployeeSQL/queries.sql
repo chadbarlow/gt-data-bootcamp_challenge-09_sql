@@ -26,8 +26,7 @@ JOIN employee e ON dm.emp_no = e.emp_no;
 	FROM dept_manager dm, departments d, employee e
 	WHERE dm.dept_no = d.dept_no AND dm.emp_no = e.emp_no AND dm.emp_no IN (
 		SELECT emp_no 
-		FROM employee
-		)
+		FROM employee)
 	ORDER BY dm.dept_no;
 
 
@@ -57,8 +56,7 @@ JOIN employee e ON de.emp_no = e.emp_no;
 	WHERE 
 		e.emp_no IN (
 			SELECT emp_no 
-			FROM dept_emp
-			)
+			FROM dept_emp)
 	ORDER BY e.emp_no;
 
 
@@ -83,9 +81,7 @@ WHERE d.dept_name = 'Sales';
 		WHERE de.dept_no IN (
 			SELECT d.dept_no
 			FROM departments d
-			WHERE d.dept_name = 'Sales'
-			)
-		);
+			WHERE d.dept_name = 'Sales'));
 		
 
 -- List each employee in the Sales and Development departments, including their employee number, last name, first name, and department name.
@@ -103,9 +99,7 @@ WHERE d.dept_name IN ('Sales', 'Development');
 		WHERE dept_no IN (
 			SELECT dept_no
 			FROM departments
-			WHERE dept_name IN ('Sales', 'Development')
-		)
-	)
+			WHERE dept_name IN ('Sales', 'Development')))
 	ORDER BY emp_no;
 
 
