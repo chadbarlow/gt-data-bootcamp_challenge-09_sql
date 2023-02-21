@@ -90,16 +90,26 @@ FROM employee e
 JOIN dept_emp de ON e.emp_no = de.emp_no
 JOIN departments d ON de.dept_no = d.dept_no
 WHERE d.dept_name IN ('Sales', 'Development');
-	-- Alternative solution using subqueries
+	-- Alternative solution using subqueries and UNION
 	SELECT emp_no, last_name, first_name, dept_name
 	FROM employee
 	WHERE emp_no IN (
 		SELECT emp_no
 		FROM dept_emp
-		WHERE dept_no IN (
+		WHERE dept_no = (
 			SELECT dept_no
 			FROM departments
-			WHERE dept_name IN ('Sales', 'Development')))
+			WHERE dept_name = 'Sales'))
+	UNION
+	SELECT emp_no, last_name, first_name, dept_name
+	FROM employee
+	WHERE emp_no IN (
+		SELECT emp_no
+		FROM dept_emp
+		WHERE dept_no = (
+			SELECT dept_no
+			FROM departments
+			WHERE dept_name = 'Development'))
 	ORDER BY emp_no;
 
 
