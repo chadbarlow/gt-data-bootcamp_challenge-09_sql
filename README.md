@@ -2,8 +2,6 @@
 
 <p>This project aims to analyze employee data using PostgresSQL database modeling and queries. Advanced data engineering skills are employed in this project to construct database schemas and entity relationship diagrams.</p>
 
-![ERD](https://user-images.githubusercontent.com/8321756/233797951-fef2ad58-5f96-4aa8-9f4e-acc45ca3f8ca.png)
-
 <h3 align="center"><img src="https://user-images.githubusercontent.com/8321756/233797951-fef2ad58-5f96-4aa8-9f4e-acc45ca3f8ca.png" alt="ERD"></h3>
 
 
